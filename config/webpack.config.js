@@ -140,7 +140,7 @@ webpackConfig.module.loaders.push({
   exclude : null,
   loaders : [
     'style',
-    BASE_CSS_LOADER,
+    BASE_CSS_LOADER + '&modules',
     'postcss',
     'sass?sourceMap'
   ]
