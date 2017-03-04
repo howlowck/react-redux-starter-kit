@@ -136,6 +136,12 @@ module.exports = function (plop) {
         name: 'name',
         message: 'What is the name of the component?',
         validate: required('name')
+      },
+      {
+        type: 'confirm',
+        name: 'container',
+        message: 'Do you want to create a container?',
+        default: true
       }
     ],
     actions: function (answers) {
@@ -152,31 +158,40 @@ module.exports = function (plop) {
         actions.push({
           type: 'add',
           path: 'src/components/{{subPath subpath}}{{ properCase name }}/{{ properCase name }}.js',
-          templateFile: '.plop/baseStatelessComponent.hds'
+          templateFile: '.plop/baseStatelessComponent.hbs'
         })
       } else {
         actions.push({
           type: 'add',
           path: 'src/components/{{subPath subpath}}{{ properCase name }}/{{ properCase name }}.js',
-          templateFile: '.plop/baseComponent.hds'
+          templateFile: '.plop/baseComponent.hbs'
         })
       }
 
-      actions.push(
-        {
+      if (answers.container) {
+        actions.push({
+          type: 'add',
+          path: 'src/components/{{subPath subpath}}{{ properCase name }}/{{ properCase name }}Container.js',
+          templateFile: '.plop/baseContainer.hbs'
+        })
+        actions.push({
+          type: 'add',
+          path: 'src/components/{{subPath subpath}}{{ properCase name }}/index.js',
+          templateFile: '.plop/containerIndex.hbs'
+        })
+      } else {
+        actions.push({
           type: 'add',
           path: 'src/components/{{subPath subpath}}{{ properCase name }}/index.js',
           templateFile: '.plop/componentIndex.hbs'
-        }
-      )
+        })
+      }
 
-      actions.push(
-        {
-          type: 'add',
-          path: 'src/components/{{subPath subpath}}{{ properCase name}}/{{properCase name}}.scss',
-          templateFile: '.plop/styles.txt'
-        }
-      )
+      actions.push({
+        type: 'add',
+        path: 'src/components/{{subPath subpath}}{{ properCase name}}/{{properCase name}}.scss',
+        templateFile: '.plop/styles.txt'
+      })
 
       return actions
     }
